@@ -11,11 +11,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SCREENS } from "@shared-constants";
 import { LightTheme, DarkTheme, palette } from "@theme/themes";
 // ? Screens
-import HomeScreen from "@screens/home/HomeScreen";
-import SearchScreen from "@screens/search/SearchScreen";
+import SearchScreen from "@screens/search/default/SearchScreen";
+import NewsScreen from "@screens/news/NewsScreen";
 import DetailScreen from "@screens/detail/DetailScreen";
 import ProfileScreen from "@screens/profile/ProfileScreen";
-import NotificationScreen from "@screens/notification/NotificationScreen";
+import PodcastScreen from "@screens/podcast/PodcastScreen";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
@@ -37,13 +37,13 @@ const Navigation = () => {
   ) => {
     let iconName = "home";
     switch (route.name) {
-      case SCREENS.HOME:
-        iconName = focused ? "home" : "home-outline";
-        break;
       case SCREENS.SEARCH:
         iconName = focused ? "search" : "search-outline";
         break;
-      case SCREENS.NOTIFICATION:
+      case SCREENS.NEWS:
+        iconName = focused ? "newspaper" : "newspaper-outline";
+        break;
+      case SCREENS.PODCAST:
         iconName = focused ? "notifications" : "notifications-outline";
         break;
       case SCREENS.PROFILE:
@@ -70,12 +70,9 @@ const Navigation = () => {
           },
         })}
       >
-        <Tab.Screen name={SCREENS.HOME} component={HomeScreen} />
         <Tab.Screen name={SCREENS.SEARCH} component={SearchScreen} />
-        <Tab.Screen
-          name={SCREENS.NOTIFICATION}
-          component={NotificationScreen}
-        />
+        <Tab.Screen name={SCREENS.NEWS} component={NewsScreen} />
+        <Tab.Screen name={SCREENS.PODCAST} component={PodcastScreen} />
         <Tab.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
       </Tab.Navigator>
     );
@@ -90,7 +87,7 @@ const Navigation = () => {
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SCREENS.HOME} component={renderTabNavigation} />
+        <Stack.Screen name={SCREENS.SEARCH} component={renderTabNavigation} />
         <Stack.Screen name={SCREENS.DETAIL}>
           {(props) => <DetailScreen {...props} />}
         </Stack.Screen>
