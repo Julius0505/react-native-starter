@@ -2,6 +2,8 @@ import "react-native-gesture-handler";
 import React from "react";
 import { StatusBar, useColorScheme, LogBox } from "react-native";
 import SplashScreen from "react-native-splash-screen";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "store";
 /**
  * ? Local Imports
  */
@@ -27,9 +29,9 @@ const App = () => {
   }, [scheme, isDarkMode]);
 
   return (
-    <>
+    <ReduxProvider store={store}>
       <Navigation />
-    </>
+    </ReduxProvider>
   );
 };
 

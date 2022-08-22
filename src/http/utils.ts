@@ -15,7 +15,6 @@ export const getErrorMessage = (
   error: any,
   getDataError = false
 ): string | undefined => {
-  console.log('err=>', error.response.data)
   if (error && error.response) {
     if (!getDataError) return error.response.data?.error
 

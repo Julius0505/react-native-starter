@@ -1,9 +1,8 @@
-import { ViewStyle, StyleSheet, TextStyle, ImageStyle } from "react-native";
 import { ExtendedTheme } from "@react-navigation/native";
+import { ViewStyle, ImageStyle, StyleSheet } from "react-native";
 
 interface Style {
   container: ViewStyle;
-  titleTextStyle: TextStyle;
   logoImage: ImageStyle;
 }
 
@@ -13,13 +12,7 @@ export default (theme: ExtendedTheme) => {
     container: {
       flex: 1,
       alignItems: "center",
-      backgroundColor: colors.white,
-    },
-    titleTextStyle: {
-      fontSize: 16,
-      fontWeight: "500",
-      textTransform: 'uppercase',
-      marginTop: 20
+      backgroundColor: colors.background,
     },
     logoImage: {
       margin: 20,

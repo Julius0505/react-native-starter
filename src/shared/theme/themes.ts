@@ -8,6 +8,8 @@ export const palette = {
   black: "#101214",
   button: "#1c1e21",
   shadow: "#757575",
+  gray: "#E0E0E0",
+  lightDark: '#F9F9F9',
   text: "#30363b",
   borderColor: "#d0d7de",
   borderColorDark: "#333942",
@@ -23,7 +25,7 @@ export const palette = {
   dynamicBlack: "#1c1e21",
   dynamicBackground: "#fff",
   transparent: "transparent",
-  calpyse: "#2b7488",
+  calpyse: "#37B97D",
 };
 
 export const LightTheme: ExtendedTheme = {

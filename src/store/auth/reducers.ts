@@ -30,8 +30,8 @@ export const initialState: AuthState = {
   rememberMe: false
 }
 
-const getInitialState = async (): Promise<AuthState> => {
-  const initialAuthSession = await getAutSession()
+const getInitialState = (): AuthState => {
+  const initialAuthSession = getAutSession()
   return {
     ...initialState,
     ...(initialAuthSession ?? {})
@@ -40,7 +40,7 @@ const getInitialState = async (): Promise<AuthState> => {
 
 const authStore = createSlice({
   name: 'auth',
-  initialState: await getInitialState(),
+  initialState: getInitialState(),
   reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<AuthState>): void => {
     builder.addCase(setError, (state, { payload }) => {
