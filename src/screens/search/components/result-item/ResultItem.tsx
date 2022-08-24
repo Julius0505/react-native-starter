@@ -13,14 +13,9 @@ type CustomStyleProp = StyleProp<ViewStyle> | Array<StyleProp<ViewStyle>>;
 interface ISearchResultProps {
   style?: CustomStyleProp;
   data: ISearchResult;
-  onPress: () => void;
 }
 
-const SearchResult: React.FC<ISearchResultProps> = ({
-  style,
-  data,
-  onPress,
-}) => {
+const SearchResult: React.FC<ISearchResultProps> = ({ style, data }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -28,7 +23,7 @@ const SearchResult: React.FC<ISearchResultProps> = ({
   const { name, url, displayUrl, snippet, groupParent, description } = data;
 
   return (
-    <RNBounceable style={[styles.container, style]} onPress={onPress}>
+    <RNBounceable style={[styles.container, style]}>
       <Text h4 bold color={colors.primary}>
         {name}
       </Text>
@@ -36,7 +31,7 @@ const SearchResult: React.FC<ISearchResultProps> = ({
         {handleLongString(url, 40)}
       </Text>
       <Text h5 color={colors.text} style={styles.descriptionTextStyle}>
-        {description}
+        {snippet}
       </Text>
     </RNBounceable>
   );

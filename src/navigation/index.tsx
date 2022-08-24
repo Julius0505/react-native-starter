@@ -13,16 +13,19 @@ import { LightTheme, DarkTheme, palette } from "@theme/themes";
 // ? Screens
 import SearchScreen from "@screens/search/default/SearchScreen";
 import SearchResultScreen from "@screens/search/result/SearchResultScreen";
-import NewsScreen from "@screens/news/NewsScreen";
+import NewsScreen from "@screens/news/news-default/NewsScreen";
 import DetailScreen from "@screens/detail/DetailScreen";
 import ProfileScreen from "@screens/profile/ProfileScreen";
 import MoreScreen from "@screens/more/MoreScreen";
 import PodcastScreen from "@screens/podcast/PodcastScreen";
+import NewsFilter from "@screens/news/news-filter/NewsFilter";
+import NewsDetail from "@screens/news/news-detail/NewsDetail";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
+const NewsStack = createStackNavigator();
 
 const SearchScreens = () => {
   return (
@@ -36,6 +39,16 @@ const SearchScreens = () => {
         component={SearchResultScreen}
       />
     </SearchStack.Navigator>
+  );
+};
+
+const NewsScreens = () => {
+  return (
+    <NewsStack.Navigator screenOptions={{ headerShown: false }}>
+      <NewsStack.Screen name={SCREENS.NEWS_DEFAULT} component={NewsScreen} />
+      <NewsStack.Screen name={SCREENS.NEWS_DETAIL} component={NewsDetail} />
+      <NewsStack.Screen name={SCREENS.NEWS_FILTER} component={NewsFilter} />
+    </NewsStack.Navigator>
   );
 };
 
@@ -78,7 +91,7 @@ const Navigation = () => {
     return <Icon name={iconName} type={type} size={size} color={color} />;
   };
 
-  const renderTabNavigation = () => {
+  const RenderTabNavigation = () => {
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -95,7 +108,7 @@ const Navigation = () => {
         })}
       >
         <Tab.Screen name={SCREENS.SEARCH} component={SearchScreens} />
-        <Tab.Screen name={SCREENS.NEWS} component={NewsScreen} />
+        <Tab.Screen name={SCREENS.NEWS} component={NewsScreens} />
         <Tab.Screen name={SCREENS.PODCAST} component={PodcastScreen} />
         <Tab.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
         <Tab.Screen name={SCREENS.MORE} component={MoreScreen} />
@@ -112,7 +125,7 @@ const Navigation = () => {
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SCREENS.SEARCH} component={renderTabNavigation} />
+        <Stack.Screen name={SCREENS.SEARCH} component={RenderTabNavigation} />
         <Stack.Screen name={SCREENS.DETAIL}>
           {(props) => <DetailScreen {...props} />}
         </Stack.Screen>

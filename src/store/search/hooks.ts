@@ -8,7 +8,8 @@ import {
   setType,
   setFilterSetting,
   setOffset,
-  setBingOffset
+  setBingOffset,
+  setSort,
 } from './actions'
 
 export const useSearch = (): SearchReturnHook => {
@@ -21,6 +22,7 @@ export const useSearch = (): SearchReturnHook => {
     ...searchState,
     setQuery: useActionCreator(setQuery), 
     setType: useActionCreator(setType),
+    setSort: useActionCreator(setSort),
     setFilterSetting: useActionCreator(setFilterSetting),
     setOffset: useActionCreator(setOffset),
     setBingOffset: useActionCreator(setBingOffset)

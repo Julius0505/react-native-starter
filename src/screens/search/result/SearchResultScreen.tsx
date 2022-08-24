@@ -20,6 +20,7 @@ import { ISearchResult } from "@services/models";
 import Text from "@shared-components/text-wrapper/TextWrapper";
 import Icon from "react-native-dynamic-vector-icons";
 import RNBounceable from "@freakycoder/react-native-bounceable";
+import { SEARCH_FIELD_TYPE } from "enums/constants";
 
 interface SearchResultScreenProps {}
 
@@ -37,13 +38,10 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
     market,
     offset,
     bingOffset,
+    setType,
     setOffset,
     setBingOffset,
   } = useSearch();
-
-  const handleItemPress = () => {
-    NavigationService.push(SCREENS.DETAIL);
-  };
 
   const config: AxiosRequestConfig = {
     method: "post",
@@ -63,6 +61,7 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
 
   useEffect(() => {
     loadMore(true);
+    setType(SEARCH_FIELD_TYPE.SEARCH);
   }, []);
 
   const loadMore = async (init = false) => {
@@ -124,9 +123,7 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
     <View style={styles.listContainer}>
       <FlatList
         data={results}
-        renderItem={({ item }) => (
-          <SearchResult data={item} onPress={handleItemPress} />
-        )}
+        renderItem={({ item }) => <SearchResult data={item} />}
         ListFooterComponent={Footer}
       />
     </View>

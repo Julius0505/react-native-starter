@@ -5,3 +5,9 @@ export enum SEARCH_FIELD_TYPE {
     NEWS = 'news',
     PODCAST = 'podcast',
 }
+
+export enum NEWS_SEARCH_SORT {
+    RECENT = 'recent',
+    RELEVANT = 'relevant',
+    INFORMATIVE = 'informative',
+}
