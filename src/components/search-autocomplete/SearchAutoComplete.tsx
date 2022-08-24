@@ -10,6 +10,7 @@ import RNBounceable from "@freakycoder/react-native-bounceable";
 import { SEARCH_FIELD_TYPE } from "enums/constants";
 import { useNews } from "store/news/hooks";
 import { useSetting } from "store/setting/hooks";
+import { usePodcast } from "store/podcast/hooks";
 
 interface SearchAutoCompleteProps {}
 
@@ -17,10 +18,13 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
   const { searchType } = useSetting();
   const { query: searchQuery, setQuery: setSearchQuery } = useSearch();
   const { query: newsQuery, setQuery: setNewsQuery } = useNews();
+  const { query: podcastQuery, setQuery: setPodcastQuery } = usePodcast();
 
   const theme = useTheme();
   const { colors } = theme;
   const styles = React.useMemo(() => createStyles(theme), [theme]);
+
+  console.log("serachTyp", searchType);
 
   const handleSearch = () => {
     if (searchType === SEARCH_FIELD_TYPE.SEARCH)
@@ -31,6 +35,10 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
       NavigationService.navigate(SCREENS.NEWS, {
         screen: SCREENS.NEWS_DEFAULT,
       });
+    if (searchType === SEARCH_FIELD_TYPE.PODCAST)
+      NavigationService.navigate(SCREENS.PODCAST, {
+        screen: SCREENS.PODCAST,
+      });
   };
 
   const query =
@@ -38,11 +46,12 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
       ? searchQuery
       : searchType === SEARCH_FIELD_TYPE.NEWS
       ? newsQuery
-      : "";
+      : podcastQuery;
 
   const handleChangeText = (text: string) => {
     if (searchType === SEARCH_FIELD_TYPE.SEARCH) setSearchQuery(text);
     if (searchType === SEARCH_FIELD_TYPE.NEWS) setNewsQuery(text);
+    if (searchType === SEARCH_FIELD_TYPE.PODCAST) setPodcastQuery(text);
   };
 
   return (

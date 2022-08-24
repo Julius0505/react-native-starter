@@ -152,7 +152,11 @@ const NewsDetail: React.FC<INewsDetailProps> = () => {
             ))}
           </View>
         ) : reportLoading ? (
-          <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />
+          <ActivityIndicator
+            color={colors.primary}
+            style={{ marginTop: 20 }}
+            size="large"
+          />
         ) : (
           <Report data={report} />
         )}

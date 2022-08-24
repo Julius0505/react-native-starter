@@ -13,21 +13,24 @@ import { LightTheme, DarkTheme, palette } from "@theme/themes";
 // ? Screens
 import SearchScreen from "@screens/search/default/SearchScreen";
 import SearchResultScreen from "@screens/search/result/SearchResultScreen";
-import NewsScreen from "@screens/news/news-default/NewsScreen";
+import NewsScreen from "@screens/news/default/NewsScreen";
 import DetailScreen from "@screens/detail/DetailScreen";
 import ProfileScreen from "@screens/profile/ProfileScreen";
 import MoreScreen from "@screens/more/MoreScreen";
-import PodcastScreen from "@screens/podcast/PodcastScreen";
-import NewsFilter from "@screens/news/news-filter/NewsFilter";
-import NewsDetail from "@screens/news/news-detail/NewsDetail";
+import PodcastScreen from "@screens/podcast/default/PodcastScreen";
+import NewsFilter from "@screens/news/filter/NewsFilter";
+import NewsDetail from "@screens/news/detail/NewsDetail";
 import { SEARCH_FIELD_TYPE } from "enums/constants";
 import { useSetting } from "store/setting/hooks";
+import PodcastFilter from "@screens/podcast/filter/PodcastFilter";
+import NewEpisodes from "@screens/podcast/new-episodes/NewEpisodes";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
 const NewsStack = createStackNavigator();
+const PodcastStack = createStackNavigator();
 
 const SearchScreens = () => {
   return (
@@ -51,6 +54,22 @@ const NewsScreens = () => {
       <NewsStack.Screen name={SCREENS.NEWS_DETAIL} component={NewsDetail} />
       <NewsStack.Screen name={SCREENS.NEWS_FILTER} component={NewsFilter} />
     </NewsStack.Navigator>
+  );
+};
+
+const PodcastScreens = () => {
+  return (
+    <PodcastStack.Navigator screenOptions={{ headerShown: false }}>
+      <PodcastStack.Screen
+        name={SCREENS.PODCAST_DEFAULT}
+        component={PodcastScreen}
+      />
+      <PodcastStack.Screen
+        name={SCREENS.PODCAST_FILTER}
+        component={PodcastFilter}
+      />
+      <PodcastStack.Screen name={SCREENS.PODCAST_NEW} component={NewEpisodes} />
+    </PodcastStack.Navigator>
   );
 };
 
@@ -130,7 +149,7 @@ const Navigation = () => {
         />
         <Tab.Screen
           name={SCREENS.PODCAST}
-          component={PodcastScreen}
+          component={PodcastScreens}
           listeners={{
             tabPress: () => {
               setSearchType(SEARCH_FIELD_TYPE.PODCAST);

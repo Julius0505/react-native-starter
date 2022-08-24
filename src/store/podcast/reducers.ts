@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 
 import { EPodcastCategory, PodcastState, PODCAST_SORT } from './types'
-import { setQuery, setSort, setSearchAfter, setCategory, setCutOffs, setSourceCheck, setUnCheckedSources, } from './actions'
+import { setQuery, setSort, setSubscriptions, subscribe, setChecks } from './actions'
 
 export const defaultCutOffs = {
   [EPodcastCategory.POLITICS]: 85,
@@ -14,15 +14,14 @@ export const defaultCutOffs = {
   [EPodcastCategory.SPORT]: 100
 }
 
-
-
 export const initialState: PodcastState = {
+  loading: false,
+  error: false,
+  success: false,
   query: '',
   sort: PODCAST_SORT[0],
-  searchAfter: '',
-  category: EPodcastCategory.ALL,
-  cutoffs: defaultCutOffs,
-  unCheckedSources: []
+  subscriptions: [],
+  checks: []
 }
 
 const podcastStore = createSlice({
@@ -39,34 +38,45 @@ const podcastStore = createSlice({
       state.sort = payload ?? PODCAST_SORT[0]
     })
 
-    builder.addCase(setSearchAfter, (state, { payload }) => {
-      state.searchAfter = payload ?? ''
+    builder.addCase(setSubscriptions, (state, { payload }) => {
+      state.subscriptions = payload ?? []
     })
 
-    builder.addCase(setCategory, (state, { payload }) => {
-      state.category = payload ?? EPodcastCategory.ALL
-    })
-
-    builder.addCase(setCutOffs, (state, { payload }) => {
-      state.cutoffs = payload ?? defaultCutOffs
-    })
-
-    builder.addCase(setUnCheckedSources, (state, { payload }) => {
-      state.unCheckedSources = payload ?? []
-    })
-
-    builder.addCase(setSourceCheck, (state, { payload }) => {
+    builder.addCase(setChecks, (state, { payload }) => {
       if(!payload) return
-
-      const index = state.unCheckedSources.findIndex(source => source === payload)
+      
+      const index = state.checks.findIndex(cId => cId === payload)
       
       if(index >= 0) {
-        state.unCheckedSources.splice(index, 1)
+        state.checks.splice(index, 1)
       } else {
-        state.unCheckedSources.push(payload)
+        state.checks.push(payload)
       }
     })
 
+    builder.addCase(subscribe.pending, (state) => {
+      state.loading = true
+      state.error = false
+      state.success = false
+    })
+
+    builder.addCase(subscribe.fulfilled, (state, {payload}) => {
+      state.loading = false
+      state.success = `subscribed successfully!`
+      const index = state.subscriptions.findIndex(sub => sub.id === payload.id)
+      
+      if(index >= 0) {
+        state.subscriptions.splice(index, 1)
+      } else {
+        state.subscriptions.push(payload)
+      }
+    })
+
+    builder.addCase(subscribe.rejected, (state, { error }) => {
+      state.loading = false
+      state.error = error?.message ?? true
+      state.success = false
+    })
   }
 })
 

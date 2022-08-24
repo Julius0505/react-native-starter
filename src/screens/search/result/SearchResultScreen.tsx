@@ -93,7 +93,7 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
   const Footer = () => (
     <View style={styles.footer}>
       {loading ? (
-        <ActivityIndicator color={colors.primary} />
+        <ActivityIndicator color={colors.primary} size="large" />
       ) : noMore ? (
         <Text h4 style={styles.infoText}>
           No more results available for this query.

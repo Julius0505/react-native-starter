@@ -49,9 +49,9 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
     const preData = init ? [] : results;
     axios
       .get(
-        `https://s.valurank.com/api/v1/otherweb/news?query=${query}${
-          !init && searchAfter ? "&search_after=" + searchAfter : ""
-        }${
+        `https://s.valurank.com/api/v1/otherweb/news?query=${query}&sort=${
+          sort.value
+        }${!init && searchAfter ? "&search_after=" + searchAfter : ""}${
           category === "all"
             ? Object.keys(cutoffs)
                 .map(
@@ -145,7 +145,7 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
   const Footer = () => (
     <View style={styles.footer}>
       {loading ? (
-        <ActivityIndicator color={colors.primary} />
+        <ActivityIndicator color={colors.primary} size="large" />
       ) : results.length > 0 ? (
         !!searchAfter ? (
           <Button

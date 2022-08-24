@@ -1,4 +1,4 @@
-import { SelectItem } from "@services/models"
+import { ISubscription, SelectItem } from "@services/models"
 import { PODCAST_SEARCH_SORT } from "enums/constants"
 
 export enum EPodcastCategory {
@@ -53,21 +53,21 @@ export interface ICutOffs {
   [EPodcastCategory.SPORT]: number
 }
 
+
 export interface PodcastState {
+  loading: boolean
+  error: string | boolean
+  success: string | boolean
   query: string,
   sort: SelectItem<PODCAST_SEARCH_SORT>,
-  searchAfter: string,
-  category: EPodcastCategory,
-  cutoffs: ICutOffs,
-  unCheckedSources: string[]
+  subscriptions: ISubscription[] 
+  checks: string[]
 }
 
 export interface PodcastReturnHook extends PodcastState {
   setQuery: (query: string) => void
   setSort: (sort: SelectItem<PODCAST_SEARCH_SORT> ) => void
-  setSearchAfter: (searchAfter: string) => void
-  setCategory: (category: EPodcastCategory) => void
-  setCutOffs: (cutoffs: ICutOffs) => void
-  setSourceCheck: (source: string) => void
-  setUnCheckedSources: (sourceList: string[]) => void
+  setSubscriptions: (subscriptions: ISubscription[]) => void
+  subscribe: (sub: ISubscription) => void
+  setChecks: (checks: string) => void
 }

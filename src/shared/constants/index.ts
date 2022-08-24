@@ -9,6 +9,9 @@ export const SCREENS = {
   NEWS_DETAIL: 'NewsDetail',
   NEWS_FILTER: 'NewsFilter',
   PODCAST: "Podcast",
+  PODCAST_DEFAULT: 'PodcastDefault',
+  PODCAST_FILTER: 'PodcastFilter',
+  PODCAST_NEW: 'PodcastNew',
   PROFILE: "Profile",
   DETAIL: "Detail",
   MORE: "More"
