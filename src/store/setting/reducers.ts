@@ -6,15 +6,18 @@ import {
   setSuccess,
   setSetting,
   createSetting,
-  getSetting
+  getSetting,
+  setSearchType
 } from './actions'
 import { logout } from '../auth/actions'
+import { SEARCH_FIELD_TYPE } from 'enums/constants'
 
 export const initialState: SettingState = {
   loading: false,
   error: false,
   success: false,
-  setting: null
+  setting: null,
+  searchType: SEARCH_FIELD_TYPE.SEARCH
 }
 
 const settingStore = createSlice({
@@ -41,6 +44,10 @@ const settingStore = createSlice({
 
     builder.addCase(logout, () => initialState)
 
+    builder.addCase(setSearchType, (state, { payload }) => {
+      state.searchType = payload ?? SEARCH_FIELD_TYPE.SEARCH
+    })
+
     builder.addCase(getSetting.fulfilled, (state, { payload }) => {
       state.loading = false
       state.setting = payload?.hits?.hits?.[0]?._source
@@ -63,6 +70,8 @@ const settingStore = createSlice({
         state.success = false
       }
     )
+
+   
   }
 })
 

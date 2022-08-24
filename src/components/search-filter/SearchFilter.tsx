@@ -19,7 +19,7 @@ const SearchFilter: React.FC<SearchFilterProps> = () => {
       {SearchFilterSettings.map((sf: SettingType) => {
         const isEnabled = !!filterSetting.find((s) => s === sf.id);
         return (
-          <View style={styles.switch}>
+          <View style={styles.switch} key={sf.id}>
             <Text h5 style={styles.switchTitle}>
               {sf.title}
             </Text>

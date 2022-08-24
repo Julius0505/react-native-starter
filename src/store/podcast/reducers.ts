@@ -1,32 +1,42 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 
-import { defaultCutOffs, ENewsCategory, NewsState, NEWS_SORT } from './types'
-import { setQuery, setSort, setSearchAfter, setCategory, setCutOffs, setSourceCheck, setUnCheckedSources, setNews, setAllSources} from './actions'
+import { EPodcastCategory, PodcastState, PODCAST_SORT } from './types'
+import { setQuery, setSort, setSearchAfter, setCategory, setCutOffs, setSourceCheck, setUnCheckedSources, } from './actions'
 
-
-export const initialState: NewsState = {
-  query: '',
-  sort: NEWS_SORT[0],
-  searchAfter: '',
-  category: ENewsCategory.ALL,
-  cutoffs: defaultCutOffs,
-  unCheckedSources: [],
-  news: null,
-  allSources: []
+export const defaultCutOffs = {
+  [EPodcastCategory.POLITICS]: 85,
+  [EPodcastCategory.TECH]: 85,
+  [EPodcastCategory.WORLD]: 85,
+  [EPodcastCategory.ENTERTAINMENT]: 100,
+  [EPodcastCategory.BUSINESS]: 85,
+  [EPodcastCategory.SCIENCE]: 85,
+  [EPodcastCategory.HEALTH]: 85,
+  [EPodcastCategory.SPORT]: 100
 }
 
-const newsStore = createSlice({
-  name: 'news',
+
+
+export const initialState: PodcastState = {
+  query: '',
+  sort: PODCAST_SORT[0],
+  searchAfter: '',
+  category: EPodcastCategory.ALL,
+  cutoffs: defaultCutOffs,
+  unCheckedSources: []
+}
+
+const podcastStore = createSlice({
+  name: 'podcast',
   initialState,
   reducers: {},
-  extraReducers: (builder: ActionReducerMapBuilder<NewsState>): void => {
+  extraReducers: (builder: ActionReducerMapBuilder<PodcastState>): void => {
 
     builder.addCase(setQuery, (state, { payload }) => {
       state.query = payload ?? ''
     })
 
     builder.addCase(setSort, (state, { payload }) => {
-      state.sort = payload ?? NEWS_SORT[0]
+      state.sort = payload ?? PODCAST_SORT[0]
     })
 
     builder.addCase(setSearchAfter, (state, { payload }) => {
@@ -34,7 +44,7 @@ const newsStore = createSlice({
     })
 
     builder.addCase(setCategory, (state, { payload }) => {
-      state.category = payload ?? ENewsCategory.ALL
+      state.category = payload ?? EPodcastCategory.ALL
     })
 
     builder.addCase(setCutOffs, (state, { payload }) => {
@@ -43,14 +53,6 @@ const newsStore = createSlice({
 
     builder.addCase(setUnCheckedSources, (state, { payload }) => {
       state.unCheckedSources = payload ?? []
-    })
-
-    builder.addCase(setAllSources, (state, { payload }) => {
-      state.allSources = payload ?? []
-    })
-
-    builder.addCase(setNews, (state, { payload }) => {
-      state.news = payload ?? null
     })
 
     builder.addCase(setSourceCheck, (state, { payload }) => {
@@ -68,4 +70,4 @@ const newsStore = createSlice({
   }
 })
 
-export default newsStore.reducer
+export default podcastStore.reducer

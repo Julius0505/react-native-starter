@@ -1,4 +1,4 @@
-import { SelectItem } from "@services/models"
+import { INews, SelectItem } from "@services/models"
 import { NEWS_SEARCH_SORT } from "enums/constants"
 
 export enum ENewsCategory {
@@ -47,6 +47,23 @@ export interface ICutOffs {
   [ENewsCategory.HEALTH]: number
   [ENewsCategory.SPORT]: number
 }
+export const defaultCutOffs = {
+  [ENewsCategory.POLITICS]: 85,
+  [ENewsCategory.TECH]: 85,
+  [ENewsCategory.WORLD]: 85,
+  [ENewsCategory.ENTERTAINMENT]: 100,
+  [ENewsCategory.BUSINESS]: 85,
+  [ENewsCategory.SCIENCE]: 85,
+  [ENewsCategory.HEALTH]: 85,
+  [ENewsCategory.SPORT]: 100
+}
+
+export const NEWS_SORT: SelectItem<NEWS_SEARCH_SORT>[] = [
+  { text: "Most relevant first", value: NEWS_SEARCH_SORT.RELEVANT },
+  { text: "Most recent first", value: NEWS_SEARCH_SORT.RECENT },
+  { text: "Most informative first", value: NEWS_SEARCH_SORT.INFORMATIVE },
+];
+
 
 export interface NewsState {
   query: string,
@@ -54,7 +71,9 @@ export interface NewsState {
   searchAfter: string,
   category: ENewsCategory,
   cutoffs: ICutOffs,
-  unCheckedSources: string[]
+  unCheckedSources: string[],
+  news: INews | null,
+  allSources: NewsSource[]
 }
 
 export interface NewsReturnHook extends NewsState {
@@ -65,4 +84,6 @@ export interface NewsReturnHook extends NewsState {
   setCutOffs: (cutoffs: ICutOffs) => void
   setSourceCheck: (source: string) => void
   setUnCheckedSources: (sourceList: string[]) => void
+  setNews: (news: INews) => void
+  setAllSources: (allSources: NewsSource[]) => void
 }

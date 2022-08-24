@@ -24,7 +24,8 @@ export default (theme: ExtendedTheme) => {
       paddingBottom: 100
     },
     subTitle: {
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      paddingVertical: 8
     },
     slider: {
       padding: 6

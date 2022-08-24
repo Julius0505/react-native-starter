@@ -1,3 +1,5 @@
+import { SEARCH_FIELD_TYPE } from "enums/constants"
+
 export interface UpdateSettingData {
   key: string
   data: any
@@ -8,6 +10,7 @@ export interface SettingState {
   error: string | boolean
   success: string | boolean
   setting: any | null
+  searchType: SEARCH_FIELD_TYPE
 }
 
 export interface SettingReturnHook extends SettingState {
@@ -16,4 +19,5 @@ export interface SettingReturnHook extends SettingState {
   setSetting: (setting: any) => void
   createSetting: (data: any) => void
   getSetting: () => void
+  setSearchType: (type: SEARCH_FIELD_TYPE) => void
 }

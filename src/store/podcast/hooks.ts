@@ -1,7 +1,7 @@
 import { shallowEqual, useSelector } from 'react-redux'
 
 import { useActionCreator } from 'hooks'
-import { NewsReturnHook } from './types'
+import { PodcastReturnHook } from './types'
 import { RootState } from '../types'
 import {
   setCategory,
@@ -10,27 +10,23 @@ import {
   setSearchAfter,
   setSort,
   setSourceCheck,
-  setUnCheckedSources,
-  setNews,
-  setAllSources
+  setUnCheckedSources
 } from './actions'
 
-export const useNews = (): NewsReturnHook => {
-  const newsState = useSelector(
-    (state: RootState) => state.news,
+export const usePodcast = (): PodcastReturnHook => {
+  const podcastState = useSelector(
+    (state: RootState) => state.podcast,
     shallowEqual
   )
 
   return {
-    ...newsState,
+    ...podcastState,
     setQuery: useActionCreator(setQuery), 
     setSort: useActionCreator(setSort),
     setSearchAfter : useActionCreator(setSearchAfter),
     setCategory : useActionCreator(setCategory),
     setCutOffs : useActionCreator(setCutOffs),
     setSourceCheck: useActionCreator(setSourceCheck),
-    setUnCheckedSources: useActionCreator(setUnCheckedSources),
-    setNews: useActionCreator(setNews),
-    setAllSources: useActionCreator(setAllSources),
+    setUnCheckedSources: useActionCreator(setUnCheckedSources)
   }
 }

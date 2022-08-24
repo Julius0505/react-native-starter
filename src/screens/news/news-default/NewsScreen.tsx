@@ -13,34 +13,36 @@ import SearchAutoComplete from "components/search-autocomplete/SearchAutoComplet
 import { SCREENS } from "@shared-constants";
 import NewsResult from "../components/news-item/NewsResult";
 import { INews, SelectItem } from "@services/models";
-import { useSearch } from "store/search/hooks";
-import { NEWS_SEARCH_SORT, SEARCH_FIELD_TYPE } from "enums/constants";
+import { NEWS_SEARCH_SORT } from "enums/constants";
 import { useNews } from "store/news/hooks";
-
-export const NEWS_SORT: SelectItem<NEWS_SEARCH_SORT>[] = [
-  { text: "Most relevant first", value: NEWS_SEARCH_SORT.RELEVANT },
-  { text: "Most recent first", value: NEWS_SEARCH_SORT.RECENT },
-  { text: "Most informative first", value: NEWS_SEARCH_SORT.INFORMATIVE },
-];
+import { NewsSource, NEWS_SORT } from "store/news/types";
 
 interface NewsScreenProps {}
 
 const NewsScreen: React.FC<NewsScreenProps> = () => {
   const theme = useTheme();
   const { colors } = theme;
-  const { type, setType } = useSearch();
-  const { query, sort, setSort } = useNews();
+  const {
+    query,
+    sort,
+    searchAfter,
+    category,
+    cutoffs,
+    unCheckedSources,
+    allSources,
+    setSort,
+    setNews,
+    setSearchAfter,
+  } = useNews();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [loading, setLoading] = React.useState(false);
-  const [searchAfter, setSearchAfter] = React.useState<string>();
   const [results, setResults] = React.useState<INews[]>([]);
-  const [total, setTotal] = React.useState();
+  const [total, setTotal] = React.useState(0);
 
   React.useEffect(() => {
-    setType(SEARCH_FIELD_TYPE.NEWS);
     loadMore(true);
     setResults([]);
-  }, []);
+  }, [query, sort, category, cutoffs, unCheckedSources, allSources]);
 
   const loadMore = (init?: boolean) => {
     setLoading(true);
@@ -49,6 +51,28 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
       .get(
         `https://s.valurank.com/api/v1/otherweb/news?query=${query}${
           !init && searchAfter ? "&search_after=" + searchAfter : ""
+        }${
+          category === "all"
+            ? Object.keys(cutoffs)
+                .map(
+                  (cId) =>
+                    `&category=${cId}&cutoff=${cId}:${
+                      cutoffs[cId as keyof typeof cutoffs]
+                    }`,
+                )
+                .join("")
+            : `&category=${category}&cutoff=${category}:${
+                cutoffs[category as keyof typeof cutoffs]
+              }`
+        }${
+          !unCheckedSources.length
+            ? ""
+            : allSources
+                .filter(
+                  (x: NewsSource) => !unCheckedSources.includes(x?.username),
+                )
+                .map((s: NewsSource) => `&source=${s?.username}`)
+                .join("")
         }`,
       )
       .then((res) => {
@@ -60,19 +84,19 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
       });
   };
 
-  const handleItemPress = () => {
+  const handleItemPress = (item: INews) => {
+    setNews(item);
     NavigationService.navigate(SCREENS.NEWS, { screen: SCREENS.NEWS_DETAIL });
   };
 
   const handleFilterPress = () => {
-    console.log("filterpress");
     NavigationService.navigate(SCREENS.NEWS, { screen: SCREENS.NEWS_FILTER });
   };
 
   const Header = () => (
     <View style={styles.header}>
       <Text h3 bold>
-        News
+        NEWS
       </Text>
       <RNBounceable onPress={handleFilterPress}>
         <Icon name="filter" type="Feather" />
@@ -82,7 +106,7 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
 
   const StatusBar = () => (
     <View style={styles.statusBar}>
-      <Text h5>{results.length} results</Text>
+      <Text h5>{total} results</Text>
       <View style={styles.select}>
         <Text h5>Sort by</Text>
         <SelectDropdown
@@ -93,7 +117,7 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
               name="caret-down"
               type="Ionicons"
               color={colors.primary}
-              size={16}
+              size={12}
             />
           )}
           dropdownIconPosition="right"
@@ -105,6 +129,7 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
             item.text
           }
           buttonStyle={{
+            width: 180,
             backgroundColor: colors.transparent,
           }}
           buttonTextStyle={{
@@ -148,7 +173,7 @@ const NewsScreen: React.FC<NewsScreenProps> = () => {
       <FlatList
         data={results}
         renderItem={({ item }) => (
-          <NewsResult data={item} onPress={handleItemPress} />
+          <NewsResult data={item} onPress={() => handleItemPress(item)} />
         )}
         ListFooterComponent={Footer}
       />

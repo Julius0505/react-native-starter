@@ -1,12 +1,13 @@
 // ? Screens
 export const SCREENS = {
+  TABS: 'Tabs',
   SEARCH: "Search",
-  SEARCH_DEFAULT: 'Search Default',
-  SEARCH_RESULT: 'Search Result',
+  SEARCH_DEFAULT: 'SearchDefault',
+  SEARCH_RESULT: 'SearchResult',
   NEWS: "News",
-  NEWS_DEFAULT: 'News Default',
-  NEWS_DETAIL: 'News Detail',
-  NEWS_FILTER: 'News Filter',
+  NEWS_DEFAULT: 'NewsDefault',
+  NEWS_DETAIL: 'NewsDetail',
+  NEWS_FILTER: 'NewsFilter',
   PODCAST: "Podcast",
   PROFILE: "Profile",
   DETAIL: "Detail",

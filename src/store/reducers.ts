@@ -7,6 +7,7 @@ import settingReducer, {
 import userReducer, { initialState as userState } from './user/reducers'
 import searchReducer, { initialState as searchState } from './search/reducers'
 import newsReducer, { initialState as newsState } from './news/reducers'
+import podcastReducer, { initialState as podcastState } from './podcast/reducers'
 
 export const initialRootState = {
   auth: authState,
@@ -14,6 +15,7 @@ export const initialRootState = {
   user: userState,
   search: searchState,
   news: newsState,
+  podcast: podcastState,
 }
 
 const rootReducer = combineReducers({
@@ -22,6 +24,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   search: searchReducer,
   news: newsReducer,
+  podcast: podcastReducer,
 })
 
 export default rootReducer

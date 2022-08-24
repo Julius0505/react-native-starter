@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import createStyles from "./NewsFilter.style";
 import Text from "@shared-components/text-wrapper/TextWrapper";
 import Slider from "@react-native-community/slider";
 import { ENewsCategory, NewsCategories, NewsSource } from "store/news/types";
-import RNBounceable from "@freakycoder/react-native-bounceable";
 import { useNews } from "store/news/hooks";
 import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
@@ -23,19 +22,19 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
     category,
     cutoffs,
     unCheckedSources,
+    allSources,
     setCategory,
     setCutOffs,
     setSourceCheck,
     setUnCheckedSources,
+    setAllSources,
   } = useNews();
-  const [allSources, setAllSources] = React.useState<NewsSource[]>([]);
   const [checkAll, setCheckAll] = React.useState(true);
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       const expAllSources = await getExpLocalData("NEWS_ALL_SOURCES");
-      console.log("expAllSources", expAllSources);
       if (expAllSources) setAllSources(expAllSources);
       else {
         axios
@@ -46,7 +45,6 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
               res.data?.items,
               1000 * 60 * 60,
             );
-            console.log("received", res.data?.items);
             setAllSources(res.data?.items);
           });
       }
@@ -55,7 +53,7 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
   }, []);
 
   const handleCheckAll = () => {
-    if (checkAll) {
+    if (!checkAll) {
       setUnCheckedSources([]);
     } else {
       setUnCheckedSources(allSources.map((source) => source.username));
@@ -78,7 +76,7 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
         </Text>
 
         {Object.keys(NewsCategories).map((cId: string) => (
-          <RNBounceable
+          <TouchableOpacity
             style={styles.categoryItem}
             key={cId}
             onPress={() => setCategory(cId as ENewsCategory)}
@@ -89,7 +87,7 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
             <Text h5 color={colors.text}>
               results
             </Text>
-          </RNBounceable>
+          </TouchableOpacity>
         ))}
 
         <Text h3 bold color={colors.text} style={styles.subTitle}>
@@ -128,18 +126,18 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
           </View>
         ))}
 
-        <RNBounceable style={styles.sourceCheck} onPress={handleCheckAll}>
+        <TouchableOpacity style={styles.sourceCheck} onPress={handleCheckAll}>
           {checkAll ? (
-            <Image source={require("/assets/img/uncheck.png")} />
-          ) : (
             <Image source={require("/assets/img/check.png")} />
+          ) : (
+            <Image source={require("/assets/img/uncheck.png")} />
           )}
           <Text h3 bold color={colors.text} style={styles.subTitle}>
             My Sources
           </Text>
-        </RNBounceable>
+        </TouchableOpacity>
         {allSources.map((source: NewsSource) => (
-          <RNBounceable
+          <TouchableOpacity
             key={source.username}
             style={styles.sourceCheck}
             onPress={() => setSourceCheck(source.username)}
@@ -152,7 +150,7 @@ const NewsFilter: React.FC<INewsFilterProps> = () => {
             <Text h5 style={styles.sourceLabel}>
               {source.name}
             </Text>
-          </RNBounceable>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>

@@ -11,3 +11,8 @@ export enum NEWS_SEARCH_SORT {
     RELEVANT = 'relevant',
     INFORMATIVE = 'informative',
 }
+
+export enum PODCAST_SEARCH_SORT {
+    RELEVANT = 'relevance',
+    POPULARITY = 'follower_count',
+}

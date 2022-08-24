@@ -9,6 +9,7 @@ export interface INews {
   source_name: string;
   created_at: string;
   source_url: string;
+  summary: string;
 }
 
 export interface IPodcast {

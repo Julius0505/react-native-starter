@@ -8,7 +8,8 @@ import {
   setSuccess,
   setSetting,
   createSetting as createSettingAction,
-  getSetting
+  getSetting,
+  setSearchType
 } from './actions'
 
 export const useSetting = (): SettingReturnHook => {
@@ -23,6 +24,7 @@ export const useSetting = (): SettingReturnHook => {
     setSetting: useActionCreator(setSetting),
     setSuccess: useActionCreator(setSuccess),
     createSetting: useActionCreator(createSettingAction),
-    getSetting: useActionCreator(getSetting)
+    getSetting: useActionCreator(getSetting),
+    setSearchType: useActionCreator(setSearchType)
   }
 }

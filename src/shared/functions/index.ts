@@ -22,3 +22,5 @@ export const handleMaxWordCount = (str: string, max: number): string => {
     }
     return result
 }
+
+export const stripHTML = (str: string) => str.replace(/<(.|\n)*?>/g, '')

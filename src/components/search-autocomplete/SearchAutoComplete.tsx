@@ -9,11 +9,13 @@ import { SCREENS } from "@shared-constants";
 import RNBounceable from "@freakycoder/react-native-bounceable";
 import { SEARCH_FIELD_TYPE } from "enums/constants";
 import { useNews } from "store/news/hooks";
+import { useSetting } from "store/setting/hooks";
 
 interface SearchAutoCompleteProps {}
 
 const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
-  const { query: searchQuery, type, setQuery: setSearchQuery } = useSearch();
+  const { searchType } = useSetting();
+  const { query: searchQuery, setQuery: setSearchQuery } = useSearch();
   const { query: newsQuery, setQuery: setNewsQuery } = useNews();
 
   const theme = useTheme();
@@ -21,33 +23,33 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
   const styles = React.useMemo(() => createStyles(theme), [theme]);
 
   const handleSearch = () => {
-    if (type === SEARCH_FIELD_TYPE.SEARCH)
+    if (searchType === SEARCH_FIELD_TYPE.SEARCH)
       NavigationService.navigate(SCREENS.SEARCH, {
         screen: SCREENS.SEARCH_RESULT,
       });
-    if (type === SEARCH_FIELD_TYPE.NEWS)
+    if (searchType === SEARCH_FIELD_TYPE.NEWS)
       NavigationService.navigate(SCREENS.NEWS, {
         screen: SCREENS.NEWS_DEFAULT,
       });
   };
 
   const query =
-    type === SEARCH_FIELD_TYPE.SEARCH
+    searchType === SEARCH_FIELD_TYPE.SEARCH
       ? searchQuery
-      : type === SEARCH_FIELD_TYPE.NEWS
+      : searchType === SEARCH_FIELD_TYPE.NEWS
       ? newsQuery
       : "";
 
   const handleChangeText = (text: string) => {
-    if (type === SEARCH_FIELD_TYPE.SEARCH) setSearchQuery(text);
-    if (type === SEARCH_FIELD_TYPE.NEWS) setNewsQuery(text);
+    if (searchType === SEARCH_FIELD_TYPE.SEARCH) setSearchQuery(text);
+    if (searchType === SEARCH_FIELD_TYPE.NEWS) setNewsQuery(text);
   };
 
   return (
     <View style={styles.container}>
       <TextInput
-        value={query}
-        placeholder="type here..."
+        defaultValue={query}
+        placeholder="Type here..."
         onSubmitEditing={handleSearch}
         onChangeText={handleChangeText}
         style={styles.textInput}

@@ -31,23 +31,13 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
   const [results, setResults] = React.useState<ISearchResult[]>([]);
   const [scrollPos, setScrollPos] = React.useState(0);
   const [lastResults, setLastResults] = React.useState<ISearchResult[]>();
-  const {
-    type,
-    query,
-    lang,
-    market,
-    offset,
-    bingOffset,
-    setType,
-    setOffset,
-    setBingOffset,
-  } = useSearch();
+  const { query, lang, market, offset, bingOffset, setOffset, setBingOffset } =
+    useSearch();
 
   const config: AxiosRequestConfig = {
     method: "post",
     url: "https://s.valurank.com/api/v1/search",
     data: {
-      type: type,
       query: query,
       lang: lang,
       market: market,
@@ -61,7 +51,6 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
 
   useEffect(() => {
     loadMore(true);
-    setType(SEARCH_FIELD_TYPE.SEARCH);
   }, []);
 
   const loadMore = async (init = false) => {
@@ -93,7 +82,7 @@ const SearchResultScreen: React.FC<SearchResultScreenProps> = () => {
   const Header = () => (
     <View style={styles.header}>
       <Text h3 bold>
-        Search
+        SEARCH
       </Text>
       <RNBounceable>
         <Icon name="filter" type="Feather" />

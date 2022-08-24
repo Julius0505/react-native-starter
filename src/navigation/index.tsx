@@ -20,6 +20,8 @@ import MoreScreen from "@screens/more/MoreScreen";
 import PodcastScreen from "@screens/podcast/PodcastScreen";
 import NewsFilter from "@screens/news/news-filter/NewsFilter";
 import NewsDetail from "@screens/news/news-detail/NewsDetail";
+import { SEARCH_FIELD_TYPE } from "enums/constants";
+import { useSetting } from "store/setting/hooks";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
@@ -92,6 +94,7 @@ const Navigation = () => {
   };
 
   const RenderTabNavigation = () => {
+    const { setSearchType } = useSetting();
     return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -107,9 +110,33 @@ const Navigation = () => {
           },
         })}
       >
-        <Tab.Screen name={SCREENS.SEARCH} component={SearchScreens} />
-        <Tab.Screen name={SCREENS.NEWS} component={NewsScreens} />
-        <Tab.Screen name={SCREENS.PODCAST} component={PodcastScreen} />
+        <Tab.Screen
+          name={SCREENS.SEARCH}
+          component={SearchScreens}
+          listeners={{
+            tabPress: () => {
+              setSearchType(SEARCH_FIELD_TYPE.SEARCH);
+            },
+          }}
+        />
+        <Tab.Screen
+          name={SCREENS.NEWS}
+          component={NewsScreens}
+          listeners={{
+            tabPress: () => {
+              setSearchType(SEARCH_FIELD_TYPE.NEWS);
+            },
+          }}
+        />
+        <Tab.Screen
+          name={SCREENS.PODCAST}
+          component={PodcastScreen}
+          listeners={{
+            tabPress: () => {
+              setSearchType(SEARCH_FIELD_TYPE.PODCAST);
+            },
+          }}
+        />
         <Tab.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
         <Tab.Screen name={SCREENS.MORE} component={MoreScreen} />
       </Tab.Navigator>
@@ -125,7 +152,7 @@ const Navigation = () => {
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SCREENS.SEARCH} component={RenderTabNavigation} />
+        <Stack.Screen name={SCREENS.TABS} component={RenderTabNavigation} />
         <Stack.Screen name={SCREENS.DETAIL}>
           {(props) => <DetailScreen {...props} />}
         </Stack.Screen>

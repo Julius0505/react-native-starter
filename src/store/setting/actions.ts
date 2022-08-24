@@ -11,6 +11,7 @@ const SET_SETTING = 'auth/SET_SETTING'
 const SET_SUCCESS = 'setting/SET_SUCCESS'
 const CREATE_SETTING = 'setting/CREATE_SETTING'
 const GET_SETTING = 'setting/GET_SETTING'
+const SET_SEARCH_TYPE = 'setting/SET_SEARCH_TYPE'
 
 export const setError = createAction<string | boolean>(SET_ERROR)
 
@@ -26,6 +27,7 @@ export const createSetting = createAsyncThunk<void, any>(
 )
 
 export const setSetting = createAction<void>(SET_SETTING)
+export const setSearchType = createAction<void>(SET_SEARCH_TYPE)
 
 // eslint-disable-next-line
 export const getSetting = createAsyncThunk<any, void>(GET_SETTING, async () => {
