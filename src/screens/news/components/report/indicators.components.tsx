@@ -4,6 +4,7 @@ import Text from "@shared-components/text-wrapper/TextWrapper";
 import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import createStyles from "./indicators.style";
+import { handleLongString } from "shared/functions";
 
 interface StringIndicatorProps {
   title: string;
@@ -78,22 +79,21 @@ export function StringIndicator({
         </TouchableOpacity>
       </View>
 
-      <View style={styles.link}>
-        {links.length > 0 &&
-          open &&
-          links.map((link) => {
-            let href = link;
+      {links.length > 0 &&
+        open &&
+        links.map((link) => {
+          let href = link;
 
-            if (convertToAbsoluteLinks && !isAbsoluteURL(href)) {
-              href = `https://${href}`;
-            }
+          if (convertToAbsoluteLinks && !isAbsoluteURL(href)) {
+            href = `https://${href}`;
+          }
 
-            return (
-              <View key={link}>
-                <Text h5 color={colors.primary}>
-                  {link}
-                </Text>
-                {/* <a
+          return (
+            <View key={link}>
+              <Text h5 color={colors.primary}>
+                {handleLongString(link, 40)}
+              </Text>
+              {/* <a
                   className="button"
                   href={href}
                   target={"_blank"}
@@ -101,10 +101,9 @@ export function StringIndicator({
                 >
                   {link}
                 </a> */}
-              </View>
-            );
-          })}
-      </View>
+            </View>
+          );
+        })}
     </View>
   );
 }

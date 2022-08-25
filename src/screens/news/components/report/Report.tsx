@@ -60,7 +60,7 @@ const Report: React.FC<IReportProps> = ({ style, data }) => {
           description={INDICATORS.tone.description}
         />
       )}
-      {!!details?.languageStats?.data?.properNouns && (
+      {/* {!!details?.languageStats?.data?.properNouns && (
         <StringIndicator
           value={INDICATORS.languageStats.toString(
             details?.languageStats?.data?.properNouns,
@@ -103,7 +103,7 @@ const Report: React.FC<IReportProps> = ({ style, data }) => {
           titleLeftPadding
           isNumber
         />
-      )}
+      )} */}
       {!!details?.textLanguage && (details?.textLanguage?.score ?? 0) >= 50 && (
         <StringIndicator
           value={details.textLanguage.label}

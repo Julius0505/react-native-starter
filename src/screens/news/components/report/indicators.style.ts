@@ -4,7 +4,6 @@ import { ViewStyle, StyleSheet, TextStyle } from "react-native";
 
 interface Style {
   indicator: ViewStyle;
-  link: ViewStyle;
   hover_info: ViewStyle;
   inline: ViewStyle;
 }
@@ -19,11 +18,6 @@ export default (theme: ExtendedTheme) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingVertical: 3
-    },
-    link: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
     },
     inline: {
       display: 'flex',
