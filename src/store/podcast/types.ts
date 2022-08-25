@@ -1,4 +1,4 @@
-import { ISubscription, SelectItem } from "@services/models"
+import { IEpisode, ISubscription, SelectItem } from "@services/models"
 import { PODCAST_SEARCH_SORT } from "enums/constants"
 
 export enum EPodcastCategory {
@@ -61,7 +61,9 @@ export interface PodcastState {
   query: string,
   sort: SelectItem<PODCAST_SEARCH_SORT>,
   subscriptions: ISubscription[] 
-  checks: string[]
+  unChecks: string[]
+  playing: boolean
+  episode: IEpisode | null
 }
 
 export interface PodcastReturnHook extends PodcastState {
@@ -70,4 +72,6 @@ export interface PodcastReturnHook extends PodcastState {
   setSubscriptions: (subscriptions: ISubscription[]) => void
   subscribe: (sub: ISubscription) => void
   setChecks: (checks: string) => void
+  setEpisode: (episode: IEpisode) => void
+  setPlaying: (playing: boolean) => void
 }

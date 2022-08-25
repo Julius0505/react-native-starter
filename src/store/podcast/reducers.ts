@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 
 import { EPodcastCategory, PodcastState, PODCAST_SORT } from './types'
-import { setQuery, setSort, setSubscriptions, subscribe, setChecks } from './actions'
+import { setQuery, setSort, setSubscriptions, subscribe, setChecks, setEpisode, setPlaying } from './actions'
 
 export const defaultCutOffs = {
   [EPodcastCategory.POLITICS]: 85,
@@ -21,7 +21,9 @@ export const initialState: PodcastState = {
   query: '',
   sort: PODCAST_SORT[0],
   subscriptions: [],
-  checks: []
+  unChecks: [],
+  playing: false,
+  episode: null,
 }
 
 const podcastStore = createSlice({
@@ -42,15 +44,23 @@ const podcastStore = createSlice({
       state.subscriptions = payload ?? []
     })
 
+    builder.addCase(setEpisode, (state, { payload }) => {
+      state.episode = payload ?? null
+    })
+
+    builder.addCase(setPlaying, (state, { payload }) => {
+      state.playing = payload ?? false
+    })
+
     builder.addCase(setChecks, (state, { payload }) => {
       if(!payload) return
-      
-      const index = state.checks.findIndex(cId => cId === payload)
+
+      const index = state.unChecks.findIndex(cId => cId === payload)
       
       if(index >= 0) {
-        state.checks.splice(index, 1)
+        state.unChecks.splice(index, 1)
       } else {
-        state.checks.push(payload)
+        state.unChecks.push(payload)
       }
     })
 

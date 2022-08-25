@@ -5,6 +5,8 @@ import { PodcastReturnHook } from './types'
 import { RootState } from '../types'
 import {
   setChecks,
+  setEpisode,
+  setPlaying,
   setQuery,
   setSort,
   setSubscriptions,
@@ -23,6 +25,8 @@ export const usePodcast = (): PodcastReturnHook => {
     setSort: useActionCreator(setSort),
     setSubscriptions: useActionCreator(setSubscriptions),
     subscribe: useActionCreator(subscribe),
-    setChecks: useActionCreator(setChecks)
+    setChecks: useActionCreator(setChecks),
+    setPlaying: useActionCreator(setPlaying),
+    setEpisode: useActionCreator(setEpisode)
   }
 }

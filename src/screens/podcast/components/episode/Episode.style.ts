@@ -24,6 +24,7 @@ export default (theme: ExtendedTheme) => {
       marginHorizontal:6
     },
     button: {
+      marginTop: 6,
       width: 100,
       padding: 6,
       borderRadius: 6,

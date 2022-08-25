@@ -1,6 +1,6 @@
 // ? Screens
 export const SCREENS = {
-  TABS: 'Tabs',
+  HOME: 'Home',
   SEARCH: "Search",
   SEARCH_DEFAULT: 'SearchDefault',
   SEARCH_RESULT: 'SearchResult',
@@ -11,10 +11,15 @@ export const SCREENS = {
   PODCAST: "Podcast",
   PODCAST_DEFAULT: 'PodcastDefault',
   PODCAST_FILTER: 'PodcastFilter',
+  PODCAST_DETAIL: 'PodcastDetail',
   PODCAST_NEW: 'PodcastNew',
   PROFILE: "Profile",
-  DETAIL: "Detail",
-  MORE: "More"
+  WIKI: "Wikipedia",
+  SCIENCE: "Scienific Studies",
+  COURCES: "Courses",
+  BOOKS: "Books",
+  MORE: "More",
+  OPINION: "Opinion"
 };
 
 export interface SettingType {

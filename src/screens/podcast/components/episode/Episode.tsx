@@ -10,6 +10,8 @@ import { useTheme } from "@react-navigation/native";
 import createStyles from "./Episode.style";
 import { handleMaxWordCount } from "shared/functions";
 import Icon from "react-native-dynamic-vector-icons";
+import SoundPlayer from "react-native-sound-player";
+import { usePodcast } from "store/podcast/hooks";
 
 interface EpisodeProps {
   data: IEpisode;
@@ -20,6 +22,7 @@ const Episode = ({ data }: EpisodeProps) => {
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { access_token } = useAuth();
+  const { playing, setPlaying, episode, setEpisode } = usePodcast();
 
   const {
     id,
@@ -36,21 +39,35 @@ const Episode = ({ data }: EpisodeProps) => {
     podcast_title,
   } = data;
 
+  const isPlaying = playing && episode?.id === id;
+
+  const handlePlay = () => {
+    setPlaying(true);
+    if (isPlaying) setPlaying(false);
+    setEpisode(data);
+  };
+
   return (
     <View style={styles.container}>
-      <Text h4 bold color={colors.black}>
-        {title}
-      </Text>
+      <TouchableOpacity onPress={handlePlay}>
+        <Text h4 bold color={colors.black}>
+          {title}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.inline}>
         <Text>{podcast_title}</Text>
         <Text style={styles.divider}>|</Text>
         <Text>{moment(data?.airDate).calendar()}</Text>
       </View>
       <Text>{handleMaxWordCount(data?.description, 20)}</Text>
-      <TouchableOpacity style={styles.button}>
-        <Icon name="play-circle-outline" type="Ionicons" color={colors.white} />
+      <TouchableOpacity style={styles.button} onPress={handlePlay}>
+        <Icon
+          name={`${isPlaying ? "pause" : "play"}-circle-outline`}
+          type="Ionicons"
+          color={colors.white}
+        />
         <Text bold color={colors.white} style={{ marginLeft: 6 }}>
-          Play
+          {isPlaying ? "Puase" : "Play"}
         </Text>
       </TouchableOpacity>
     </View>

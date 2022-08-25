@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TextInput } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import createStyles from "./SearchAutoComplete.style";
@@ -20,44 +20,41 @@ const SearchAutoComplete: React.FC<SearchAutoCompleteProps> = () => {
   const { query: newsQuery, setQuery: setNewsQuery } = useNews();
   const { query: podcastQuery, setQuery: setPodcastQuery } = usePodcast();
 
+  const [text, setText] = useState("");
+
   const theme = useTheme();
   const { colors } = theme;
   const styles = React.useMemo(() => createStyles(theme), [theme]);
 
-  console.log("serachTyp", searchType);
-
   const handleSearch = () => {
-    if (searchType === SEARCH_FIELD_TYPE.SEARCH)
+    if (searchType === SEARCH_FIELD_TYPE.SEARCH) {
+      setSearchQuery(text);
       NavigationService.navigate(SCREENS.SEARCH, {
         screen: SCREENS.SEARCH_RESULT,
       });
-    if (searchType === SEARCH_FIELD_TYPE.NEWS)
+    }
+    if (searchType === SEARCH_FIELD_TYPE.NEWS) {
+      setNewsQuery(text);
       NavigationService.navigate(SCREENS.NEWS, {
         screen: SCREENS.NEWS_DEFAULT,
       });
-    if (searchType === SEARCH_FIELD_TYPE.PODCAST)
+    }
+    if (searchType === SEARCH_FIELD_TYPE.PODCAST) {
+      setPodcastQuery(text);
       NavigationService.navigate(SCREENS.PODCAST, {
         screen: SCREENS.PODCAST,
       });
+    }
   };
 
-  const query =
-    searchType === SEARCH_FIELD_TYPE.SEARCH
-      ? searchQuery
-      : searchType === SEARCH_FIELD_TYPE.NEWS
-      ? newsQuery
-      : podcastQuery;
-
-  const handleChangeText = (text: string) => {
-    if (searchType === SEARCH_FIELD_TYPE.SEARCH) setSearchQuery(text);
-    if (searchType === SEARCH_FIELD_TYPE.NEWS) setNewsQuery(text);
-    if (searchType === SEARCH_FIELD_TYPE.PODCAST) setPodcastQuery(text);
+  const handleChangeText = (t: string) => {
+    setText(t);
   };
 
   return (
     <View style={styles.container}>
       <TextInput
-        defaultValue={query}
+        defaultValue={text}
         placeholder="Type here..."
         onSubmitEditing={handleSearch}
         onChangeText={handleChangeText}

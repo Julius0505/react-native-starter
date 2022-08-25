@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import {
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useRoute, useTheme } from "@react-navigation/native";
 import * as NavigationService from "react-navigation-helpers";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-dynamic-vector-icons";
@@ -8,24 +13,28 @@ import RNBounceable from "@freakycoder/react-native-bounceable";
 /**
  * ? Local Imports
  */
-import createStyles from "./NewEpisodes.style";
+import createStyles from "./PodcastDetail.style";
 import Text from "@shared-components/text-wrapper/TextWrapper";
 import { SCREENS } from "@shared-constants";
 import SearchAutoComplete from "components/search-autocomplete/SearchAutoComplete";
-import { IEpisode, ISubscription } from "@services/models";
+import { IEpisode, IPodcast, ISubscription } from "@services/models";
 import { usePodcast } from "store/podcast/hooks";
 import axios from "axios";
 import Episode from "../components/episode/Episode";
 import AudioPlayer from "../components/audio-player/AudioPlayer";
+import Podcast from "../components/podcast/Podcast";
 
-interface NewEpisodesProps {}
+interface PodcastDetailProps {}
 
-const NewEpisodes: React.FC<NewEpisodesProps> = () => {
+const PodcastDetail: React.FC<PodcastDetailProps> = () => {
   const theme = useTheme();
   const { colors } = theme;
+  const { params } = useRoute();
+  const { id } = params as { id: string };
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const { query, sort, unChecks, subscriptions, setSort } = usePodcast();
+  const [podcast, setPodcast] = useState<IPodcast>();
   const [episodeList, setEpisodeList] = useState<IEpisode[]>([]);
+
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -35,39 +44,33 @@ const NewEpisodes: React.FC<NewEpisodesProps> = () => {
     });
   };
 
-  const handleNewEpisode = () => {};
+  const handleNewEpisode = () => {
+    NavigationService.navigate(SCREENS.PODCAST, {
+      screen: SCREENS.PODCAST_NEW,
+    });
+  };
 
-  const ids = subscriptions
-    .map((s: ISubscription) => s.id)
-    .filter((id: string) => !unChecks.includes(id));
-
-  console.log("ids", ids);
+  console.log("params:", id);
 
   useEffect(() => {
-    console.log("podcast=>", query);
     setLoading(true);
     axios
-      .post(
-        `https://podcasts.valurank.com/api/episodes`,
-        { ids },
-        {
-          headers: {
-            Authorization: "ApiKey UdEtwyaP33w_uJ069KNcbZqaZN8WfWpLANueVQi9Klc",
-          },
+      .get(`https://podcasts.valurank.com/api/podchaser/podcast/${id}`, {
+        headers: {
+          Authorization: "ApiKey UdEtwyaP33w_uJ069KNcbZqaZN8WfWpLANueVQi9Klc",
         },
-      )
-      .then((res) => {
-        setEpisodeList(
-          (res?.data?.data?.results ?? []).map((r: any) => r._source),
-        );
-        setLoading(false);
       })
-      .catch((res) => {
-        setEpisodeList([]);
+      .then((res) => {
         setLoading(false);
-        console.error(res);
+        setPodcast(res?.data.data);
+        setEpisodeList(res?.data?.data?.episodes?.data ?? []);
+      })
+      .catch(() => {
+        setLoading(false);
+        setPodcast(undefined);
+        setEpisodeList([]);
       });
-  }, [query, sort]);
+  }, [id]);
 
   const Header = () => (
     <View style={styles.header}>
@@ -85,6 +88,10 @@ const NewEpisodes: React.FC<NewEpisodesProps> = () => {
       <Header />
       <SearchAutoComplete />
 
+      <TouchableOpacity onPress={handleNewEpisode}>
+        <Text color={colors.primary}>go to New Episodes</Text>
+      </TouchableOpacity>
+
       {loading ? (
         <ActivityIndicator
           color={colors.primary}
@@ -93,16 +100,14 @@ const NewEpisodes: React.FC<NewEpisodesProps> = () => {
         />
       ) : (
         <>
-          <FlatList
-            style={styles.list}
-            data={episodeList}
-            renderItem={({ item }) => <Episode data={item} />}
-            ListHeaderComponent={
-              <Text h4 bold>
-                NEW EPISODES FROM MY PODCASTS
-              </Text>
-            }
-          />
+          {podcast && (
+            <FlatList
+              style={styles.list}
+              data={episodeList}
+              renderItem={({ item }) => <Episode data={item} />}
+              ListHeaderComponent={<Podcast data={podcast} />}
+            />
+          )}
           <AudioPlayer />
         </>
       )}
@@ -110,4 +115,4 @@ const NewEpisodes: React.FC<NewEpisodesProps> = () => {
   );
 };
 
-export default NewEpisodes;
+export default PodcastDetail;

@@ -136,6 +136,7 @@ const PodcastScreen: React.FC<PodcastScreenProps> = () => {
         />
       ) : (
         <FlatList
+          style={styles.list}
           data={podcastList}
           renderItem={({ item }) => <Podcast data={item} />}
           // ListFooterComponent={Footer}

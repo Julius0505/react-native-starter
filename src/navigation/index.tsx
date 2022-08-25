@@ -1,8 +1,9 @@
 import React from "react";
-import { useColorScheme } from "react-native";
+import { Image, useColorScheme } from "react-native";
 import Icon, { IconType } from "react-native-dynamic-vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { isReadyRef, navigationRef } from "react-navigation-helpers";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 /**
@@ -14,9 +15,7 @@ import { LightTheme, DarkTheme, palette } from "@theme/themes";
 import SearchScreen from "@screens/search/default/SearchScreen";
 import SearchResultScreen from "@screens/search/result/SearchResultScreen";
 import NewsScreen from "@screens/news/default/NewsScreen";
-import DetailScreen from "@screens/detail/DetailScreen";
 import ProfileScreen from "@screens/profile/ProfileScreen";
-import MoreScreen from "@screens/more/MoreScreen";
 import PodcastScreen from "@screens/podcast/default/PodcastScreen";
 import NewsFilter from "@screens/news/filter/NewsFilter";
 import NewsDetail from "@screens/news/detail/NewsDetail";
@@ -24,9 +23,16 @@ import { SEARCH_FIELD_TYPE } from "enums/constants";
 import { useSetting } from "store/setting/hooks";
 import PodcastFilter from "@screens/podcast/filter/PodcastFilter";
 import NewEpisodes from "@screens/podcast/new-episodes/NewEpisodes";
+import PodcastDetail from "@screens/podcast/detail/PodcastDetail";
+import OpinionScreen from "@screens/opinion/Opinion";
+import WikiScreen from "@screens/wiki/WikiScreen";
+import ScienceScreen from "@screens/Science/ScienceScreen";
+import CourseScreen from "@screens/Course/CourseScreen";
+import BookScreen from "@screens/Book/BookScreen";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
 const NewsStack = createStackNavigator();
@@ -69,6 +75,10 @@ const PodcastScreens = () => {
         component={PodcastFilter}
       />
       <PodcastStack.Screen name={SCREENS.PODCAST_NEW} component={NewEpisodes} />
+      <PodcastStack.Screen
+        name={SCREENS.PODCAST_DETAIL}
+        component={PodcastDetail}
+      />
     </PodcastStack.Navigator>
   );
 };
@@ -88,25 +98,64 @@ const Navigation = () => {
     size: number,
   ) => {
     let iconName = "home";
+    switch (route.name) {
+      case SCREENS.PODCAST:
+        if (focused)
+          return <Image source={require("/assets/img/podcast_1.png")} />;
+        else return <Image source={require("/assets/img/podcast.png")} />;
+      case SCREENS.OPINION:
+        if (focused)
+          return <Image source={require("/assets/img/opinion_1.png")} />;
+        else return <Image source={require("/assets/img/opinion.png")} />;
+      case SCREENS.SEARCH:
+        if (focused)
+          return <Image source={require("/assets/img/search_1.png")} />;
+        else return <Image source={require("/assets/img/search.png")} />;
+      case SCREENS.MORE:
+        return (
+          <Icon name="more-vertical" type="Feather" color={color} size={size} />
+        );
+      case SCREENS.NEWS:
+      default:
+        if (focused)
+          return <Image source={require("/assets/img/news_1.png")} />;
+        else return <Image source={require("/assets/img/news.png")} />;
+    }
+  };
+
+  const renderDrawerIcon = (
+    route: any,
+    focused: boolean,
+    color: string,
+    size: number,
+  ) => {
+    let iconName = "home";
     let type: IconType = "Ionicons";
     switch (route.name) {
-      case SCREENS.NEWS:
-        iconName = focused ? "newspaper" : "newspaper-outline";
+      case SCREENS.PROFILE:
+        iconName = "user";
+        type = "AntDesign";
         break;
-      case SCREENS.PODCAST:
-        iconName = "podcast";
+      case SCREENS.WIKI:
+        iconName = "wikipedia";
         type = "Fontisto";
         break;
-      case SCREENS.PROFILE:
-        iconName = focused ? "person" : "person-outline";
+      case SCREENS.SCIENCE:
+        iconName = "chemistry";
+        type = "SimpleLineIcons";
         break;
-      case SCREENS.MORE:
-        iconName = "more-vertical";
-        type = "Feather";
+      case SCREENS.COURCES:
+        iconName = "graduation";
+        type = "SimpleLineIcons";
         break;
-      case SCREENS.SEARCH:
+      case SCREENS.BOOKS:
+        iconName = "book";
+        type = "AntDesign";
+        break;
+      case SCREENS.HOME:
       default:
-        iconName = focused ? "search" : "search-outline";
+        iconName = "home";
+        type = "AntDesign";
         break;
     }
     return <Icon name={iconName} type={type} size={size} color={color} />;
@@ -130,15 +179,6 @@ const Navigation = () => {
         })}
       >
         <Tab.Screen
-          name={SCREENS.SEARCH}
-          component={SearchScreens}
-          listeners={{
-            tabPress: () => {
-              setSearchType(SEARCH_FIELD_TYPE.SEARCH);
-            },
-          }}
-        />
-        <Tab.Screen
           name={SCREENS.NEWS}
           component={NewsScreens}
           listeners={{
@@ -147,6 +187,7 @@ const Navigation = () => {
             },
           }}
         />
+        <Tab.Screen name={SCREENS.OPINION} component={OpinionScreen} />
         <Tab.Screen
           name={SCREENS.PODCAST}
           component={PodcastScreens}
@@ -156,8 +197,25 @@ const Navigation = () => {
             },
           }}
         />
-        <Tab.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
-        <Tab.Screen name={SCREENS.MORE} component={MoreScreen} />
+        <Tab.Screen
+          name={SCREENS.SEARCH}
+          component={SearchScreens}
+          listeners={{
+            tabPress: () => {
+              setSearchType(SEARCH_FIELD_TYPE.SEARCH);
+            },
+          }}
+        />
+        <Tab.Screen
+          name={SCREENS.MORE}
+          component={NewsScreen}
+          listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              e.preventDefault();
+              navigation.openDrawer();
+            },
+          })}
+        />
       </Tab.Navigator>
     );
   };
@@ -170,12 +228,27 @@ const Navigation = () => {
       }}
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SCREENS.TABS} component={RenderTabNavigation} />
-        <Stack.Screen name={SCREENS.DETAIL}>
-          {(props) => <DetailScreen {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
+      <Drawer.Navigator
+        screenOptions={({ route }) => ({
+          drawerPosition: "right",
+          headerShown: false,
+          drawerIcon: ({ focused, color, size }) =>
+            renderDrawerIcon(route, focused, color, size),
+          drawerStyle: {
+            borderBottomLeftRadius: 16,
+            borderTopLeftRadius: 16,
+          },
+        })}
+      >
+        <Drawer.Screen name={SCREENS.HOME} component={RenderTabNavigation} />
+        <Drawer.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
+        <Drawer.Screen name={SCREENS.WIKI} component={WikiScreen} />
+        <Drawer.Screen name={SCREENS.SCIENCE} component={ScienceScreen} />
+        <Drawer.Screen name={SCREENS.COURCES} component={CourseScreen} />
+        <Drawer.Screen name={SCREENS.BOOKS} component={BookScreen} />
+      </Drawer.Navigator>
+      {/* <Stack.Navigator screenOptions={{ headerShown: false }}>
+      </Stack.Navigator> */}
     </NavigationContainer>
   );
 };

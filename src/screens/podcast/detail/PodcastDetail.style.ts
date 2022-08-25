@@ -5,8 +5,6 @@ import { ScreenWidth } from "@freakycoder/react-native-helpers";
 interface Style {
   container: ViewStyle;
   header: ViewStyle;
-  statusBar: ViewStyle
-  select: ViewStyle
   list: ViewStyle
 }
 
@@ -24,19 +22,8 @@ export default (theme: ExtendedTheme) => {
       alignItems: "center",
       justifyContent: "space-between",
     },
-    statusBar: {
-      width: ScreenWidth * 0.9,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    select: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
     list: {
       width: ScreenWidth * 0.95,
-    }
+    },
   });
 };
