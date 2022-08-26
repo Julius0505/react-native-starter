@@ -15,7 +15,7 @@ import { LightTheme, DarkTheme, palette } from "@theme/themes";
 import SearchScreen from "@screens/search/default/SearchScreen";
 import SearchResultScreen from "@screens/search/result/SearchResultScreen";
 import NewsScreen from "@screens/news/default/NewsScreen";
-import ProfileScreen from "@screens/profile/ProfileScreen";
+import ProfileScreen from "@screens/auth/profile/ProfileScreen";
 import PodcastScreen from "@screens/podcast/default/PodcastScreen";
 import NewsFilter from "@screens/news/filter/NewsFilter";
 import NewsDetail from "@screens/news/detail/NewsDetail";
@@ -118,7 +118,6 @@ const Navigation = () => {
     color: string,
     size: number,
   ) => {
-    let iconName = "home";
     switch (route.name) {
       case SCREENS.PODCAST:
         if (focused)
