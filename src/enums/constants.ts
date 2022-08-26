@@ -1,4 +1,4 @@
-export const AUTH_SESSION_KEY = 'customerCity/AUTH_SESSION_KEY'
+export const AUTH_STORAGE_KEY = 'otherweb/AUTH_STORAGE_KEY'
 
 export enum SEARCH_FIELD_TYPE {
     SEARCH = 'search',

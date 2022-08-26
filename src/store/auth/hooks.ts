@@ -15,7 +15,7 @@ import {
   initPasswordReset,
   register
 } from './actions'
-import { clearAuthSession } from './utils'
+import { clearAuthAsyncStorage } from './utils'
 import { useActionCreator } from '../../hooks'
 
 export const useAuth = (): AuthReturnHook => {
@@ -24,7 +24,7 @@ export const useAuth = (): AuthReturnHook => {
 
   const logout = useCallback(async () => {
     await logoutApi()
-    clearAuthSession()
+    await clearAuthAsyncStorage()
     dispatch(logoutAction())
   }, [dispatch])
 

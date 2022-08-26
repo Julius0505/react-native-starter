@@ -13,7 +13,7 @@ import {
   initPasswordReset,
   register
 } from './actions'
-import { getAutSession } from './utils'
+import { getAuthAsyncStorage } from './utils'
 import { authErrorHandler } from 'http/utils'
 
 export const initialState: AuthState = {
@@ -31,7 +31,7 @@ export const initialState: AuthState = {
 }
 
 const getInitialState = (): AuthState => {
-  const initialAuthSession = getAutSession()
+  const initialAuthSession = getAuthAsyncStorage()
   return {
     ...initialState,
     ...(initialAuthSession ?? {})
@@ -40,7 +40,8 @@ const getInitialState = (): AuthState => {
 
 const authStore = createSlice({
   name: 'auth',
-  initialState: getInitialState(),
+  initialState,
+  // initialState: getInitialState(),
   reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<AuthState>): void => {
     builder.addCase(setError, (state, { payload }) => {

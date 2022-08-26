@@ -1,26 +1,25 @@
-import { AUTH_SESSION_KEY } from '../../enums/constants'
-import { AuthSession } from './types'
+import { AUTH_STORAGE_KEY } from '../../enums/constants'
+import { AuthStorage } from './types'
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 
-export const setAuthSession = (data: AuthSession, rememberMe = false) => {
-    AsyncStorage?.setItem(AUTH_SESSION_KEY, JSON.stringify(data))
-}
-
-export const getAutSession = (): AuthSession | null => {
+export const getAuthAsyncStorage = async () : Promise<AuthStorage | null> => {
   try {
-    const savedSession =
-    AsyncStorage?.getItem(AUTH_SESSION_KEY) 
-    // if (savedSession) {
-    //   const parsed = JSON.parse(savedSession)
-    //   return parsed
-    // }
+    const data = await AsyncStorage.getItem(AUTH_STORAGE_KEY)
+    if (data) {
+      const parsed: AuthStorage = JSON.parse(data)
+      return parsed
+    } 
     return null
   } catch (error) {
     return null
   }
 }
 
-export const clearAuthSession = (): void => {
-  AsyncStorage?.removeItem(AUTH_SESSION_KEY)
+export const setAuthAsyncStorage = async (data: AuthStorage, rememberMe = false) => {
+  await AsyncStorage?.setItem(AUTH_STORAGE_KEY, JSON.stringify(data))
+}
+
+export const clearAuthAsyncStorage = async () => {
+  await AsyncStorage?.removeItem(AUTH_STORAGE_KEY)
 }
 

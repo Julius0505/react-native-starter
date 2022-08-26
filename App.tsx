@@ -9,6 +9,8 @@ import { store } from "store";
  */
 import Navigation from "./src/navigation";
 import { isAndroid } from "@freakycoder/react-native-helpers";
+import AxiosInterceptors from "http/interceptors";
+AxiosInterceptors.setup(store);
 
 LogBox.ignoreAllLogs();
 

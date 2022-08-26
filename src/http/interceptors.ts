@@ -4,8 +4,8 @@ import { AxiosRequestConfig } from 'axios'
 import http from './index'
 import { RootState } from '../store/types'
 import { logout, setAuthSession } from 'store/auth/actions'
-import { AuthSession } from 'store/auth/types'
-import { setAuthSession as persistAuthSession } from 'store/auth/utils'
+import { AuthStorage } from 'store/auth/types'
+import { setAuthAsyncStorage as persistAuthSession } from 'store/auth/utils'
 
 export default {
   setup: (store: Store<RootState>): void => {
@@ -51,7 +51,7 @@ export default {
                   expires_in: new_expire_in
                 } = rs.data.result
 
-                const authSession: AuthSession = {
+                const authSession: AuthStorage = {
                   access_token: new_access_token,
                   refresh_token: new_refresh_token,
                   rememberMe,

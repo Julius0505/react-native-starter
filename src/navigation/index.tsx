@@ -29,11 +29,14 @@ import WikiScreen from "@screens/wiki/WikiScreen";
 import ScienceScreen from "@screens/Science/ScienceScreen";
 import CourseScreen from "@screens/Course/CourseScreen";
 import BookScreen from "@screens/Book/BookScreen";
+import Signin from "@screens/auth/signin/SigninScreen";
+import { useAuth } from "store/auth/hooks";
+import Signup from "@screens/auth/signup/SignupScreen";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
 const SearchStack = createStackNavigator();
 const NewsStack = createStackNavigator();
 const PodcastStack = createStackNavigator();
@@ -80,6 +83,24 @@ const PodcastScreens = () => {
         component={PodcastDetail}
       />
     </PodcastStack.Navigator>
+  );
+};
+
+const AuthScreens = () => {
+  const { access_token } = useAuth();
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      {access_token ? (
+        <>
+          <AuthStack.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
+        </>
+      ) : (
+        <>
+          <AuthStack.Screen name={SCREENS.SIGNIN} component={Signin} />
+          <AuthStack.Screen name={SCREENS.SIGNUP} component={Signup} />
+        </>
+      )}
+    </AuthStack.Navigator>
   );
 };
 
@@ -132,7 +153,7 @@ const Navigation = () => {
     let iconName = "home";
     let type: IconType = "Ionicons";
     switch (route.name) {
-      case SCREENS.PROFILE:
+      case SCREENS.AUTH:
         iconName = "user";
         type = "AntDesign";
         break;
@@ -241,7 +262,11 @@ const Navigation = () => {
         })}
       >
         <Drawer.Screen name={SCREENS.HOME} component={RenderTabNavigation} />
-        <Drawer.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
+        <Drawer.Screen
+          name={SCREENS.AUTH}
+          component={AuthScreens}
+          options={{ title: "Profile" }}
+        />
         <Drawer.Screen name={SCREENS.WIKI} component={WikiScreen} />
         <Drawer.Screen name={SCREENS.SCIENCE} component={ScienceScreen} />
         <Drawer.Screen name={SCREENS.COURCES} component={CourseScreen} />

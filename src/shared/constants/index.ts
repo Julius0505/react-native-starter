@@ -1,19 +1,28 @@
 // ? Screens
 export const SCREENS = {
   HOME: 'Home',
+
   SEARCH: "Search",
   SEARCH_DEFAULT: 'SearchDefault',
   SEARCH_RESULT: 'SearchResult',
+  
   NEWS: "News",
   NEWS_DEFAULT: 'NewsDefault',
   NEWS_DETAIL: 'NewsDetail',
   NEWS_FILTER: 'NewsFilter',
+  
   PODCAST: "Podcast",
   PODCAST_DEFAULT: 'PodcastDefault',
   PODCAST_FILTER: 'PodcastFilter',
   PODCAST_DETAIL: 'PodcastDetail',
   PODCAST_NEW: 'PodcastNew',
+
+  AUTH: 'Auth',
   PROFILE: "Profile",
+  SIGNIN: "Signin",
+  SIGNUP: "Signup",
+  FORGOTPASSWORD: "Forgot Password",
+  
   WIKI: "Wikipedia",
   SCIENCE: "Scienific Studies",
   COURCES: "Courses",

@@ -7,9 +7,9 @@ import {
   forgotPassword as forgotPasswordApi,
   initPasswordReset as initPasswordResetApi
 } from '../../http/auth'
-import { setAuthSession as persistAuthSession } from './utils'
+import { setAuthAsyncStorage as persistAuthSession } from './utils'
 import {
-  AuthSession,
+  AuthStorage,
   ChangePasswordData,
   LoginData,
   RegisterData
@@ -32,7 +32,7 @@ export const setSuccess = createAction<string | boolean>(SET_SUCCESS)
 
 export const logout = createAction<void>(LOG_OUT)
 
-export const setAuthSession = createAction<AuthSession>(SET_AUTH_SESSION)
+export const setAuthSession = createAction<AuthStorage>(SET_AUTH_SESSION)
 
 export const setSession = createAction<{
   session: string
@@ -48,9 +48,11 @@ export const login = createAsyncThunk<void, LoginData>(
       password
     )
 
+    console.log("auth/access_token", access_token, username, password)
+
     if (!access_token) return
 
-    const authSession: AuthSession = {
+    const authSession: AuthStorage = {
       access_token: access_token ?? '',
       refresh_token: refresh_token ?? '',
       rememberMe,

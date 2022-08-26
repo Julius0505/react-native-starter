@@ -9,9 +9,9 @@ import { ENewsCategory, NewsCategories, NewsSource } from "store/news/types";
 import { useNews } from "store/news/hooks";
 import { ScrollView } from "react-native-gesture-handler";
 import axios from "axios";
-import { getExpLocalData, setExpLocalData } from "utils";
 import Icon from "react-native-dynamic-vector-icons";
 import * as NavigationService from "react-navigation-helpers";
+import { getExpLocalData, setExpLocalData } from "shared/functions";
 
 interface INewsFilterProps {}
 
